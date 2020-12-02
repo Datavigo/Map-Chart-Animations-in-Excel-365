@@ -1,0 +1,33 @@
+Sub MapChartPlot()
+
+
+Dim tbl As ListObject
+Dim objChrt As ChartObject
+
+Target_tbl = "Table1"
+Target_chart = "Chart 1"
+
+Set tbl = ActiveSheet.ListObjects(Target_tbl)
+Set objChrt = ActiveSheet.ChartObjects(Target_chart)
+
+objChrt.Activate
+
+HeadRow = tbl.HeaderRowRange
+
+For x = 2 To tbl.ListColumns.Count
+
+    ActiveChart.FullSeriesCollection(1).Name = HeadRow(1, x)  
+    YdataRange = tbl.ListColumns(x).DataBodyRange.Address 
+    ActiveChart.FullSeriesCollection(1).Values = YdataRange
+    ActiveChart.ChartTitle.Text = "US Election Results " & HeadRow(1, x)
+    myFileNAme = "DataVigo_Charts_" & HeadRow(1, x)
+    objChrt.Activate
+    objChrt.Chart.Export FileName:=myFileNAme & ".PNG", Filtername:="PNG"
+    
+    'For Windows
+    'objChrt.Chart.Export FileName:=ThisWorkbook.Path & "\" & myFileNAme & ".PNG", Filtername:="PNG"
+   
+Next
+
+End Sub
+
